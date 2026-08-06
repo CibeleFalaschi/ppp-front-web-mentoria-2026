@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CRM Clientes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="loader" class="loader-overlay is-hidden">
+      <div class="loader-box">
+        <div class="button is-loading is-white is-large">Carregando</div>
+      </div>
+    </div>
+
+    <section id="login-page" class="hero is-fullheight is-dark">
+      <div class="hero-body">
+        <div class="container">
+          <div class="columns is-centered">
+            <div class="column is-5-tablet is-4-desktop">
+              <div class="box">
+                <div class="has-text-centered mb-4">
+                  <p class="title is-5 has-text-link">Gestão de Clientes</p>
+                  <p class="subtitle is-6">Acesso ao painel administrativo</p>
+                </div>
+                <form id="login-form">
+                  <div class="field">
+                    <label class="label">Usuário</label>
+                    <div class="control">
+                      <input class="input" type="text" name="username" placeholder="admin" required />
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label class="label">Senha</label>
+                    <div class="control">
+                      <input class="input" type="password" name="password" placeholder="••••••••" required />
+                    </div>
+                  </div>
+                  <div class="field">
+                    <button id="login-submit" type="submit" class="button is-link is-fullwidth">Entrar</button>
+                  </div>
+                </form>
+                <div id="login-message" class="notification is-danger is-hidden"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="app-page" class="is-hidden">
+      <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item has-text-weight-semibold">Gestão de Clientes</a>
+        </div>
+        <div class="navbar-menu">
+          <div class="navbar-end">
+            <div class="navbar-item">
+              <button id="logout-button" class="button is-light">Sair</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container my-5">
+        <div class="columns is-multiline">
+          <div class="column is-3">
+            <div class="box has-background-link-light">
+              <p class="heading">Total de clientes</p>
+              <p id="total-clientes" class="title">0</p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="box has-background-warning-light">
+              <p class="heading">Clientes em Aberto</p>
+              <p id="abertos" class="title">0</p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="box has-background-success-light">
+              <p class="heading">Clientes Fechados</p>
+              <p id="fechados" class="title">0</p>
+            </div>
+          </div>
+          <div class="column is-3">
+            <div class="box has-background-danger-light">
+              <p class="heading">Clientes Perdidos</p>
+              <p id="perdidos" class="title">0</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="columns is-multiline is-align-items-flex-end">
+            <div class="column is-3">
+              <label class="label">Nome</label>
+              <input id="filtro-nome" class="input" type="text" placeholder="Buscar por nome" />
+            </div>
+            <div class="column is-3">
+              <label class="label">E-mail</label>
+              <input id="filtro-email" class="input" type="text" placeholder="Buscar por e-mail" />
+            </div>
+            <div class="column is-3">
+              <label class="label">Telefone</label>
+              <input id="filtro-telefone" class="input" type="text" placeholder="Buscar por telefone" />
+            </div>
+            <div class="column is-3">
+              <label class="label">Status</label>
+              <div class="select is-fullwidth">
+                <select id="filtro-status">
+                  <option value="">Todos</option>
+                  <option value="Aberto">Aberto</option>
+                  <option value="Fechado">Fechado</option>
+                  <option value="Perdido">Perdido</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="buttons mt-3">
+            <button id="btn-pesquisar" class="button is-link">Pesquisar</button>
+            <button id="btn-limpar" class="button is-warning">Limpar</button>
+            <button id="btn-novo" class="button is-success">Novo cliente</button>
+            <button id="btn-usuarios" class="button is-info">Gerenciar usuários</button>
+          </div>
+        </div>
+
+        <div id="global-message" class="notification is-hidden"></div>
+
+        <div class="box">
+          <div class="level">
+            <div class="level-left">
+              <div>
+                <p class="heading">Usuários</p>
+                <p class="title is-5">Acesso administrativo</p>
+              </div>
+            </div>
+            <div class="level-right">
+              <button id="btn-novo-usuario" class="button is-info">Novo usuário</button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="table is-fullwidth is-hoverable">
+              <thead>
+                <tr>
+                  <th>Usuário</th>
+                  <th>Perfil</th>
+                  <th>Status</th>
+                  <th class="has-text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="usuarios-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="table-container">
+            <table class="table is-fullwidth is-hoverable">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>E-mail</th>
+                  <th>Telefone</th>
+                  <th>Empresa</th>
+                  <th>Status</th>
+                  <th class="has-text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="clientes-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="user-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p id="user-modal-title" class="modal-card-title">Usuário</p>
+          <button class="delete delete-user-modal" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <form id="user-form">
+            <input type="hidden" name="id" />
+            <div class="columns is-multiline">
+              <div class="column is-6">
+                <label class="label">Usuário</label>
+                <input class="input" type="text" name="username" required />
+              </div>
+              <div class="column is-6">
+                <label class="label">Senha</label>
+                <input class="input" type="password" name="password" required />
+              </div>
+              <div class="column is-6">
+                <label class="label">Perfil</label>
+                <div class="select is-fullwidth">
+                  <select name="role" required>
+                    <option value="">Selecione</option>
+                    <option value="admin">Admin</option>
+                    <option value="vendedor">Vendedor</option>
+                  </select>
+                </div>
+              </div>
+              <div class="column is-6">
+                <label class="label">Status</label>
+                <div class="select is-fullwidth">
+                  <select name="status" required>
+                    <option value="">Selecione</option>
+                    <option value="ativo">Ativo</option>
+                    <option value="inativo">Inativo</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="buttons is-right">
+              <button type="button" id="cancel-user-form" class="button is-light">Cancelar</button>
+              <button type="submit" class="button is-link">Salvar</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <div id="client-modal" class="modal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p id="modal-title" class="modal-card-title">Cliente</p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <form id="client-form">
+            <input type="hidden" name="id" />
+            <div class="columns is-multiline">
+              <div class="column is-6">
+                <label class="label">Nome</label>
+                <input class="input" type="text" name="nome" required />
+              </div>
+              <div class="column is-6">
+                <label class="label">E-mail</label>
+                <input class="input" type="email" name="email" required />
+              </div>
+              <div class="column is-6">
+                <label class="label">Telefone</label>
+                <input class="input" type="text" name="telefone" required />
+              </div>
+              <div class="column is-6">
+                <label class="label">Empresa</label>
+                <input class="input" type="text" name="empresa" required />
+              </div>
+              <div class="column is-6">
+                <label class="label">Logradouro</label>
+                <input class="input" type="text" name="logradouro" />
+              </div>
+              <div class="column is-3">
+                <label class="label">Número</label>
+                <input class="input" type="text" name="numero" />
+              </div>
+              <div class="column is-3">
+                <label class="label">Complemento</label>
+                <input class="input" type="text" name="complemento" />
+              </div>
+              <div class="column is-4">
+                <label class="label">Bairro</label>
+                <input class="input" type="text" name="bairro" />
+              </div>
+              <div class="column is-4">
+                <label class="label">Cidade</label>
+                <input class="input" type="text" name="cidade" />
+              </div>
+              <div class="column is-4">
+                <label class="label">Estado</label>
+                <input class="input" type="text" name="estado" />
+              </div>
+              <div class="column is-4">
+                <label class="label">CEP</label>
+                <input class="input" type="text" name="cep" />
+              </div>
+              <div class="column is-8">
+                <label class="label">Status</label>
+                <div class="select is-fullwidth">
+                  <select name="status" required>
+                    <option value="">Selecione</option>
+                    <option value="Aberto">Aberto</option>
+                    <option value="Fechado">Fechado</option>
+                    <option value="Perdido">Perdido</option>
+                  </select>
+                </div>
+              </div>
+              <div class="column is-12">
+                <label class="label">Observações</label>
+                <textarea class="textarea" name="observacoes" rows="3"></textarea>
+              </div>
+            </div>
+            <div class="buttons is-right">
+              <button type="button" id="cancel-form" class="button is-light">Cancelar</button>
+              <button id="save-client-button" type="submit" class="button is-link">Salvar</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

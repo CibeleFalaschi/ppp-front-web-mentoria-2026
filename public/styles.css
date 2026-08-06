@@ -1,0 +1,46 @@
+body {
+  background: #f5f7fb;
+}
+
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loader-box {
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.notification {
+  margin-top: 1rem;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+.modal-card {
+  width: min(900px, calc(100vw - 2rem));
+}
+
+.hero.is-dark {
+  background: linear-gradient(135deg, #1f2a44, #222b45);
+}
+
+@media (max-width: 768px) {
+  .columns {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}

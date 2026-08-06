@@ -1,0 +1,13 @@
+{
+  "name": "clientes-crm-web",
+  "version": "1.0.0",
+  "description": "Aplicação web para gestão de clientes consumindo a API REST local.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --check server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
