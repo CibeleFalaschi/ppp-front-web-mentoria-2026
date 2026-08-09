@@ -4,7 +4,6 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,47 +12,40 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: front
-
       - name: Checkout da API
         uses: actions/checkout@v4
         with:
           repository: CibeleFalaschi/ppp-mentoria-2026
           path: api
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-
+          cache-dependency-path: |
+            front/package-lock.json
+            api/package-lock.json
       - name: Criar .env da API
         working-directory: api
         run: |
           echo "PORT=3000" >> .env
           echo "JWT_SECRET=secret-key" >> .env
-
       - name: Instalar dependências da API
         working-directory: api
         run: npm ci
-
       - name: Instalar dependências do front
         working-directory: front
         run: npm ci
-
       - name: Subir a API
         working-directory: api
         run: npm start &
-
       - name: Aguardar API responder
         run: npx wait-on http://localhost:3000
-
       - name: Subir o front
         working-directory: front
         run: npm start &
-
       - name: Aguardar front responder
         run: npx wait-on http://localhost:4000
-
       - name: Executar testes Cypress
         working-directory: front
         run: npm test
