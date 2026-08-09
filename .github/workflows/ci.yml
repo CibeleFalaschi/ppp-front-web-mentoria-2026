@@ -1,4 +1,4 @@
-name: CI
+name: Portfólio Mentoria - CRM Web
 
 on:
   push:
@@ -23,5 +23,11 @@ jobs:
       - name: Instalar dependências
         run: npm ci
 
-      - name: Validar projeto
+      - name: Iniciar aplicação
+        run: npm start &
+
+      - name: Aguardar aplicação
+        run: npx wait-on http://localhost:4000
+
+      - name: Executar testes Cypress
         run: npm test
