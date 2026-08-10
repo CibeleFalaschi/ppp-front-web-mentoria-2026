@@ -36,16 +36,16 @@ jobs:
       - name: Instalar dependências do front
         working-directory: front
         run: npm ci
-      - name: Subir a API
+      - name: Subir a API e aguardar
         working-directory: api
-        run: npm start &
-      - name: Aguardar API responder
-        run: npx --yes wait-on http://localhost:3000
-      - name: Subir o front
+        run: |
+          npm start &
+          npx --yes wait-on http://localhost:3000
+      - name: Subir o front e aguardar
         working-directory: front
-        run: npm start &
-      - name: Aguardar front responder
-        run: npx --yes wait-on http://localhost:4000
+        run: |
+          npm start &
+          npx --yes wait-on http://localhost:4000
       - name: Executar testes Cypress
         working-directory: front
         run: npm test
