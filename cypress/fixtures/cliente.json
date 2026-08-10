@@ -1,0 +1,12 @@
+{
+  "nome": "Maria da Silva",
+  "email": "maria.silva@email.com",
+  "telefone": "19999999994",
+  "empresa": "Empresa Cypress 4",
+  "logradouro": "Rua Cypress",
+  "numero": "124",
+  "bairro": "Centro",
+  "cidade": "Americana",
+  "estado": "SP",
+  "cep": "13465000"
+}

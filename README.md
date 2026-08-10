@@ -1,100 +1,110 @@
 # Gestão de Clientes
 
-Aplicação web de demonstração para gestão de clientes com autenticação JWT, painel administrativo e consumo de endpoints documentados no Swagger.
-
-## Objetivo
-
-Este projeto foi desenvolvido como prática de portfólio para demonstrar:
-
-- fluxo de autenticação com JWT;
-- painel administrativo com dashboard;
-- listagem, cadastro, consulta, edição e exclusão de clientes;
-- integração com uma API REST documentada em Swagger;
-- uso de uma arquitetura web simples com Express e HTML/CSS/JS.
+Projeto desenvolvido durante a Mentoria de Testes de Software 2.0, ministrada por Júlio de Lima, como projeto de portfólio pessoal para prática de testes de software.
 
 ## Tecnologias
 
-- Node.js
-- Express
-- HTML
-- CSS
-- JavaScript
-- Bulma
+Node.js, Express, HTML, CSS, JavaScript, Bulma via CDN, Cypress, Swagger e GitHub Actions.
 
-## Requisitos
+## Objetivo
 
-- Node.js instalado
-- API REST disponível em `http://localhost:3000`
-- Browser para acessar a aplicação web
+O projeto consiste em uma aplicação web para gestão de clientes, utilizada como base para a prática de testes de software.
 
-## Como executar
+A aplicação possui autenticação de usuários, dashboard, cadastro e gerenciamento de clientes e usuários, além de filtros e consultas.
 
-1. Abra o terminal na pasta do projeto.
-2. Instale as dependências:
-
-```bash
-npm install
-```
-
-3. Inicie o servidor web:
-
-```bash
-npm start
-```
-
-4. Acesse no navegador:
-
-```text
-http://localhost:4000
-```
-
-## Login de exemplo
-
-A API documentada no Swagger apresenta o seguinte exemplo de autenticação:
-
-- usuário: `admin`
-- senha: `admin123`
+A aplicação web consome uma API REST documentada em Swagger.
 
 ## Funcionalidades
 
-- Login de usuário
-- Dashboard com métricas resumidas
-- Listagem de clientes
-- Cadastro de clientes
-- Consulta de cliente por ID
-- Edição de clientes
-- Exclusão de clientes
-- Pesquisa por nome, email, telefone e status
-- Gestão de usuários conforme o contrato da API
+A aplicação possui:
 
-## Fluxo de autenticação
+- Login de usuário;
+- Dashboard com métricas de clientes;
+- Cadastro de clientes;
+- Consulta de cliente;
+- Listagem de cliente;
+- Edição de clientes;
+- Exclusão de clientes;
+- Pesquisa por nome, e-mail, telefone e status;
+- Gerenciamento de usuários.
 
-- O login é realizado no front para obter um token JWT.
-- O token é persistido no navegador e enviado em requisições autenticadas.
-- O front consome apenas os endpoints documentados no Swagger.
+## Issues e Wiki
 
-## Estrutura do projeto
+Foi realizado teste exploratório e os resultados foram registrados nas Issues e na Wiki.
 
-```text
-.
-├── public/
-│   ├── app.js
-│   ├── index.html
-│   └── styles.css
-├── resources/
-│   └── swagger.json
-├── server.js
-└── package.json
-```
+- As Issues do GitHub foram utilizadas para registrar os bugs encontrados.
+- A Wiki foi utilizada para registrar os testes realizados e sugestões de melhoria.
 
-## Observações
+## Testes automatizados
 
-- A aplicação web roda na porta `4000`.
-- A API base utilizada pelo proxy está em `http://localhost:3000`.
-- O front não deve implementar rotas ou recursos que não existam no Swagger.
+Foram criados testes automatizados utilizando Cypress.
 
-## Próximos passos
+Os testes desenvolvidos contemplam:
 
-- validar o contrato do backend com a API real;
-- expandir a documentação de usuários e permissões;
-- adicionar melhorias de UX e tratamento de erros.
+- Login;
+- Cadastro de cliente com dados válidos.
+
+Os dados utilizados no teste de cadastro são armazenados em uma fixture (`cliente.json`), permitindo reutilizar os dados durante a execução dos testes.
+
+> **Observação:** os dados de teste utilizados são fixos. Em execuções repetidas contra o mesmo banco, isso pode gerar conflito de dados duplicados (erro 409). Uma melhoria futura seria gerar dados dinâmicos (ex: com timestamp) ou resetar a base antes da execução.
+
+Os testes podem ser executados pelo terminal com:
+
+    npm test
+
+Também é possível abrir a interface do Cypress com:
+
+    npm run cy:open
+
+## CI – Integração Contínua
+
+O projeto utiliza GitHub Actions para executar os testes automatizados do Cypress.
+
+A pipeline é acionada a cada push ou pull request na branch `main`. Durante a execução, o GitHub prepara o ambiente, faz o checkout deste repositório e do repositório da API (`ppp-mentoria-2026`), instala as dependências de ambos os projetos, inicia a API e a aplicação web, e então executa os testes automatizados.
+
+## Como executar o projeto
+
+É necessário ter o Node.js instalado.
+
+Na pasta do projeto, execute:
+
+    npm install
+
+Depois, inicie a aplicação:
+
+    npm start
+
+A aplicação web estará disponível em: `http://localhost:4000`
+
+A API utilizada pela aplicação roda em: `http://localhost:3000`
+
+A documentação da API pode ser acessada pelo Swagger: `http://localhost:3000/docs`
+
+## Login para teste
+
+Usuário: `admin`
+Senha: `admin123`
+
+## Estrutura principal do projeto
+
+    .
+    ├── .github/
+    │   └── workflows/
+    │       └── ci.yml
+    ├── cypress/
+    │   ├── e2e/
+    │   │   ├── cliente.cy.js
+    │   │   └── login.cy.js
+    │   ├── fixtures/
+    │   │   └── cliente.json
+    │   └── support/
+    ├── public/
+    │   ├── app.js
+    │   ├── index.html
+    │   └── styles.css
+    ├── resources/
+    │   └── swagger.json
+    ├── cypress.config.js
+    ├── package.json
+    ├── package-lock.json
+    └── server.js
