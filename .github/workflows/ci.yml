@@ -40,12 +40,12 @@ jobs:
         working-directory: api
         run: |
           npm start &
-          npx --yes wait-on http://localhost:3000
+          npx --yes wait-on -v --timeout 30000 http://localhost:3000
       - name: Subir o front e aguardar
         working-directory: front
         run: |
           npm start &
-          npx --yes wait-on http://localhost:4000
+          npx --yes wait-on -v --timeout 30000 http://localhost:4000
       - name: Executar testes Cypress
         working-directory: front
         run: npm test
